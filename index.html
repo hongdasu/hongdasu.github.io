@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- I am a physicist working in the field of quantum mechanics and quantum electrodynamics.
+I received my undergraduate degree in physics from the Massachusetts Institute of Technology (MIT) in 1939 and went on to earn my PhD from Princeton University in 1942.
+After completing my doctoral studies, I worked on the Manhattan Project, where I helped develop the first atomic bombs.
+After the war, I returned to academia, holding teaching and research positions at Cornell and now at the California Institute of Technology. -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHD's Personal Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- equations and math -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+        integrity="sha384-Gvr4VtYw5Xp8T91bW5Y05Lz5K0z/O7Y3+f1oK3w1p5G5u5K0g3Z9U4t3J2l5K0Z9" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"
+        integrity="sha384-95lq8bYj3u4xN2Nf3T4+lK6vP6W9z6O5x5K0b3P9D5b0x6J4l3K8o5F8F4t9w5W8J2w5Q9M5L7P7K0p3Z9W9L9D7N3R4w"
+        crossorigin="anonymous"></script>
+
+    <style>
+        /* CSS part */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('Western_Campus.jpg') center/cover no-repeat;
+            opacity: 1;
+            z-index: -1;
+            filter: brightness(103%) contrast(106%) saturate(108%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* rolling bar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* --- 开始：图集网格展开逻辑 --- */
+        .photo-stack-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 280px;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-expanded {
+            display: grid !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important; /* 移动端减小间距 */
+            height: auto !important;
+            padding: 10px 0;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-expanded {
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 1.5rem !important; /* PC端恢复间距 */
+                padding: 20px 0;
+            }
+        }
+
+        .gallery-expanded .stack-card {
+            position: relative !important;
+            transform: none !important;
+            width: 100% !important; /* 移动端使用100%填充满网格，防止溢出 */
+            height: 12rem !important; /* 移动端稍微降低高度 */
+            margin: 0 auto;
+            opacity: 1 !important;
+        }
+
+        @media (min-width: 768px) {
+            .gallery-expanded .stack-card {
+                width: 12rem !important;
+                height: 15rem !important;
+            }
+        }
+
+        .stack-card:hover {
+            z-index: 50 !important;
+            scale: 1.05;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleButtons = document.querySelectorAll('.toggle-details-btn, .toggle-details-btn-academics-out');
+
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    let content = button.nextElementSibling;
+                    if (content && (content.classList.contains('collapsible-content') || content.classList.contains('collapsible-content-academics-out'))) {
+                        const isHidden = content.classList.toggle('hidden');
+                        const icon = isHidden ? 'fa-chevron-down' : 'fa-chevron-up';
+                        const text = isHidden ? (button.classList.contains('toggle-details-btn-academics-out') ? 'Show More' : 'Details') : 'Hide Details';
+                        button.innerHTML = `<i class="fas ${icon} mr-1"></i> ${text}`;
+                    }
+                });
+            });
+
+            const contactToggle = document.getElementById('contact-toggle');
+            const contactDetails = document.getElementById('contact-details');
+            const contactArrow = document.getElementById('contact-arrow');
+
+            if (contactToggle && contactDetails && contactArrow) {
+                contactToggle.addEventListener('click', () => {
+                    const isHidden = contactDetails.classList.toggle('hidden');
+                    contactArrow.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+                });
+            }
+
+            const beyondBtn = document.getElementById('beyond-toggle-btn');
+            const beyondContent = document.getElementById('beyond-content');
+            const beyondIcon = document.getElementById('beyond-icon');
+            const beyondText = document.getElementById('beyond-text');
+
+            if (beyondBtn && beyondContent) {
+                beyondBtn.addEventListener('click', () => {
+                    const isHidden = beyondContent.classList.toggle('hidden');
+                    if (beyondIcon && beyondText) {
+                        if (isHidden) {
+                            beyondIcon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                            beyondText.textContent = 'Show My Interests';
+                        } else {
+                            beyondIcon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                            beyondText.textContent = 'Hide Details';
+                        }
+                    }
+                });
+            }
+
+            const photoStacks = document.querySelectorAll('.photo-stack-container');
+            photoStacks.forEach(stack => {
+                stack.addEventListener('click', function () {
+                    this.classList.toggle('gallery-expanded');
+                });
+            });
+        });
+    </script>
+
+    <div class="max-w-6xl mx-auto my-0 sm:my-8 p-3 sm:p-6 lg:p-10 flex flex-col lg:flex-row">
+
+        <!-- side column -->
+        <aside
+            class="lg:w-72 flex-shrink-0 lg:mr-8 mb-4 sm:mb-8 lg:mb-0 p-4 sm:p-6 bg-gray-50 rounded-lg shadow-md sm:shadow-xl self-start lg:sticky lg:top-8">
+
+            <div class="text-center pb-4 border-b border-gray-200 mb-6">
+                <!-- Fix: Changed w-41 h-41 to w-40 h-40, and scale-10 to scale-90 -->
+                <div
+                    class="w-40 h-40 mx-auto rounded-full border-4 border-white overflow-hidden mb-3 shadow-md bg-white">
+                    <img src="portrait.png" alt="Hongda Su Portrait"
+                        class="w-full h-full object-cover origin-bottom scale-90" style="object-position: 50% 25%;">
+                </div>
+                <h1 class="text-xl font-bold text-gray-900">Hongda Su</h1>
+                <p class="text-sm text-gray-500 mt-1">Undergraduate @ USTC</p>
+            </div>
+
+            <nav class="mb-8">
+                <ul class="space-y-3 text-sm font-medium text-gray-700">
+                    <li>
+                        <a href="CV_Hongda_Su.pdf" target="_blank" download="CV_Hongda_Su.pdf"
+                            class="flex items-center space-x-3 p-2 rounded hover:bg-indigo-100 hover:text-indigo-600 transition">
+                            <i class="fas fa-file-pdf w-4 text-center"></i>
+                            <span>CV (Download)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <div id="contact-toggle"
+                            class="flex items-center justify-between p-2 rounded hover:bg-indigo-100 hover:text-indigo-600 transition cursor-pointer">
+                            <div class="flex items-center space-x-3">
+                                <i class="fas fa-user w-4 text-center"></i>
+                                <span>Contact</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-xs transition-transform duration-300"
+                                id="contact-arrow"></i>
+                        </div>
+
+                        <ul id="contact-details"
+                            class="hidden mt-1 ml-9 space-y-2 text-xs text-gray-600 border-l-2 border-indigo-100 pl-4 py-2">
+                            <li class="flex items-center space-x-2">
+                                <i class="far fa-envelope w-4"></i>
+                                <a href="mailto:shd0825@mail.ustc.edu.cn"
+                                    class="hover:text-indigo-600">shd0825@mail.ustc.edu.cn</a>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-phone-alt w-4"></i>
+                                <span>+86 19719217657</span>
+                            </li>
+                            <li class="flex items-center space-x-2">
+                                <i class="fas fa-map-marker-alt w-4"></i>
+                                <span>No.96, JinZhai Road Baohe District, Hefei, Anhui, 230026, P.R.China.</span>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="https://en.ustc.edu.cn/" target="_blank"
+                            class="flex items-center space-x-3 p-2 rounded hover:bg-indigo-100 hover:text-indigo-600 transition">
+                            <i class="fas fa-archive w-4 text-center"></i>
+                            <span>USTC Schoolpage</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r shadow-inner">
+                <h3 class="text-indigo-700 font-bold mb-3 text-xs uppercase tracking-wider">Contents</h3>
+                <ul class="space-y-2 text-sm text-indigo-800">
+                    <li><a href="#section1" class="block hover:underline transition">1. Introduction</a></li>
+                    <li><a href="#section2" class="block hover:underline transition">2. Academics & Publications</a>
+                    </li>
+                    <li><a href="#section3" class="block hover:underline transition">3. Research Experiences</a></li>
+                    <li><a href="#section4" class="block hover:underline transition">4. Life Outside the Lab</a></li>
+                </ul>
+            </div>
+
+        </aside>
+
+        <!-- main page -->
+        <main class="flex-1 min-w-0 bg-white/95 shadow-sm sm:shadow-2xl sm:rounded-xl p-4 sm:p-6 lg:p-10">
+
+            <div class="max-w-full lg:max-w-4xl mx-auto">
+
+                <header class="mb-12 border-b pb-8">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-snug">
+                        My Homepage
+                    </h1>
+                    <div class="text-sm text-gray-500 flex flex-wrap space-x-4">
+                        <span><i class="far fa-calendar-alt mr-1"></i> Began building on 2025-11-23</span>
+                        <span><i class="far fa-edit mr-1"></i> Last updated on 2026-09-16</span>
+                    </div>
+                </header>
+
+                <div class="space-y-12">
+
+                    <section id="section1">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-2">Introduction</h2>
+                        <div class="prose max-w-none text-gray-700 leading-7 space-y-4">
+                            <p>
+                                I am a senior undergraduate at the University of Science and Technology of China (USTC),
+                                majoring in Energy and Power
+                                Engineering and minoring in Chemistry. Expected to graduate in June 2027 with dual
+                                bachelor’s degrees, I currently
+                                rank No. 1 in my major. My academic training spans energy, thermal sciences, and
+                                chemistry, and this interdisciplinary
+                                background has sparked my passion for exploration and shaped the way I approach
+                                research.
+                            </p>
+
+                            <p>
+                                Since my sophomore year, I have participated in multiple research programs, both at USTC
+                                and externally, gaining
+                                experience in both theoretical and experimental research. My research has also led to
+                                several valuable outcomes,
+                                including a grant from the NSFC Youth Student Basic Research Project (Undergraduate).
+                            </p>
+
+                            <p> I am now seeking PhD opportunities at leading research institutions worldwide, with the
+                                goal of exploring emerging
+                                fields that hold substantial potential for practical applications, whether through
+                                innovative engineering design or
+                                advances in underlying scientific principles. In the long term, I aspire to become an
+                                independent researcher capable of identifying and pioneering underexplored
+                                research directions at the intersection of physics, chemistry, and engineering.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section id="section2">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-2">Academics & Publications</h2>
+
+                        <div class="flex flex-wrap gap-3 mt-4 mb-8">
+                            <span
+                                class="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-md text-sm font-bold shadow-sm flex items-center">
+                                <i class="fas fa-trophy mr-2 text-indigo-500"></i> Rank: 1 / 50
+                            </span>
+                            <span
+                                class="bg-blue-100 text-blue-700 px-3 py-1.5 rounded-md text-sm font-bold shadow-sm flex items-center">
+                                <i class="fas fa-chart-line mr-2 text-blue-500"></i> Overall GPA: 3.77 / 4.30
+                            </span>
+                            <span
+                                class="bg-green-100 text-green-700 px-3 py-1.5 rounded-md text-sm font-bold shadow-sm flex items-center">
+                                <i class="fas fa-graduation-cap mr-2 text-green-500"></i> Dual Degree Track (Energy &
+                                Chemistry)
+                            </span>
+                        </div>
+
+                        <div class="space-y-6">
+
+                            <!-- 1. Publications -->
+                            <div
+                                class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-file-alt text-indigo-600 mr-2 text-xl"></i> Publications
+                                    </div>
+                                    <span class="text-xs font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded"># :
+                                        co-first author</span>
+                                </h3>
+                                <ul class="space-y-5 text-sm text-gray-700 leading-relaxed">
+                                    <li class="pl-4 border-l-2 border-indigo-200">
+                                        X. Cao<sup>#</sup>, Y. Liu<sup>#</sup>, B. Zhang<sup>#</sup>, <strong
+                                            class="text-indigo-700">H.
+                                            Su<sup>#</sup></strong>, et al.
+                                        <span class="font-medium text-gray-900">"Programmable Electrothermal
+                                            Quad-Functional Metamaterials
+                                            for Decoupled Multi-Field Control"</span>,
+                                        <em class="text-gray-800">Advanced Materials</em>. DOI:
+                                        <a href="https://doi.org/10.1002/adma.202522718" target="_blank"
+                                            class="text-blue-600 hover:underline border border-blue-200 bg-blue-50 px-1 rounded">10.1002/adma.202522718</a>
+                                    </li>
+                                    <li class="pl-4 border-l-2 border-indigo-200">
+                                        Y. Liu<sup>#</sup>, J. Li<sup>#</sup>, Z. Wang<sup>#</sup>, <strong
+                                            class="text-indigo-700">H.
+                                            Su<sup>#</sup></strong>, et al.
+                                        <span class="font-medium text-gray-900">"Transient Thermal Camouflage Modulation
+                                            Enabled by
+                                            Time-Diffusion Metamaterials"</span>
+                                        <span class="text-gray-500 italic">(In preparation)</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 2. Honors & Awards -->
+                            <div
+                                class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                                    <i class="fas fa-award text-indigo-600 mr-2 text-xl"></i> Honors & Awards
+                                </h3>
+                                <ul class="space-y-4 text-sm">
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-50">
+                                        <div>
+                                            <span class="font-bold text-gray-900">National Natural Science Foundation of
+                                                China (NSFC) Youth
+                                                Student Basic Research Project (Undergraduate)</span>
+                                            <span class="block text-gray-500 text-xs mt-1">National-level research
+                                                grant, 150 recipients per
+                                                year</span>
+                                        </div>
+                                        <span class="text-gray-500 font-medium whitespace-nowrap ml-4">Sep. 2026</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-50">
+                                        <span class="font-bold text-gray-900">Wu Zhonghua Talent Program
+                                            Scholarship</span>
+                                        <span class="text-gray-500 font-medium whitespace-nowrap ml-4">Nov. 2025</span>
+                                    </li>
+                                    <li class="flex justify-between items-center pb-3 border-b border-gray-50">
+                                        <span class="font-bold text-gray-900">CAS Guangzhou Institute of Energy
+                                            Conversion
+                                            Scholarship</span>
+                                        <span class="text-gray-500 font-medium whitespace-nowrap ml-4">Oct. 2024</span>
+                                    </li>
+                                    <li class="flex justify-between items-center">
+                                        <span class="font-bold text-gray-900">Outstanding Freshman Scholarship</span>
+                                        <span class="text-gray-500 font-medium whitespace-nowrap ml-4">Dec. 2023</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 3. Core Coursework -->
+                            <div
+                                class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center">
+                                    <i class="fas fa-book-open text-indigo-600 mr-2 text-xl"></i> Core Coursework
+                                </h3>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+                                        <h4
+                                            class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-3 border-b border-indigo-50 pb-2 flex items-center">
+                                            <span
+                                                class="w-5 h-5 rounded bg-indigo-50 text-indigo-600 font-serif font-extrabold flex items-center justify-center text-xs mr-2 border border-indigo-100">E</span>
+                                            Energy & Power Engineering
+                                        </h4>
+                                        <ul class="text-sm text-gray-700 space-y-2.5">
+                                            <li class="flex justify-between">
+                                                <span>Fundamentals of Heat Transfer</span>
+                                                <span class="text-indigo-600 font-bold">93</span>
+                                            </li>
+                                            <li class="flex justify-between">
+                                                <span>Engineering Thermodynamics A</span>
+                                                <span class="text-indigo-600 font-bold">90</span>
+                                            </li>
+                                            <li class="flex justify-between">
+                                                <span>Combustion B</span>
+                                                <span class="text-indigo-600 font-bold">86</span>
+                                            </li>
+                                            <li class="flex justify-between">
+                                                <span>Engineering Numerical Analysis</span>
+                                                <span class="text-indigo-600 font-bold">94</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
+                                        <h4
+                                            class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-3 border-b border-indigo-50 pb-2 flex items-center">
+                                            <span
+                                                class="w-5 h-5 rounded bg-indigo-50 text-indigo-600 font-serif font-extrabold flex items-center justify-center text-xs mr-2 border border-indigo-100">C</span>
+                                            Chemistry
+                                        </h4>
+                                        <ul class="text-sm text-gray-700 space-y-2.5">
+                                            <li class="flex justify-between">
+                                                <span>General Chemistry A</span>
+                                                <span class="text-indigo-600 font-bold">98</span>
+                                            </li>
+                                            <li class="flex justify-between">
+                                                <span>Inorganic Chemistry I</span>
+                                                <span class="text-indigo-600 font-bold">90</span>
+                                            </li>
+                                            <li class="flex justify-between">
+                                                <span>Analytical Chemistry I</span>
+                                                <span class="text-indigo-600 font-bold">90</span>
+                                            </li>
+                                            <li class="flex justify-between">
+                                                <span>Physical Chemistry II</span>
+                                                <span class="text-indigo-600 font-bold">88</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section id="section3">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-2">Research Experiences</h2>
+
+                        <div class="space-y-6">
+
+                            <!-- experience 5 -->
+                            <div class="p-4 bg-gray-50 rounded-lg shadow-sm">
+                                <h3 class="text-lg font-bold text-gray-900">Design of a Hydrogel-based Moisture-Enabled
+                                    Electric Generator (MEG)</h3>
+                                <p class="text-right text-sm text-gray-500">Jul. 2026 - Present</p>
+                                <p class="text-indigo-500 font-medium mb-2">with Prof. Chang Liu (Department of
+                                    Mechanical Engineering, NUS, Singapore)</p>
+                                <ul class="list-disc list-outside text-gray-700 space-y-1 ml-4 text-sm">
+                                    <li>Preparing electrodes via electrochemical deposition and characterizing them.
+                                    </li>
+                                    <li>Fabricating the device and testing its performance.</li>
+                                </ul>
+                            </div>
+                            <button
+                                class="mt-3 text-indigo-600 hover:text-indigo-800 text-sm font-medium focus:outline-none transition duration-150 ease-in-out toggle-details-btn">
+                                <i class="fas fa-chevron-down mr-1"></i> Details
+                            </button>
+                            <div class="hidden mt-4 pt-4 border-t border-gray-200 collapsible-content">
+
+                                <div class="mb-5">
+                                    <button onclick="document.getElementById('meg-intro').classList.toggle('hidden')"
+                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline focus:outline-none transition-colors flex items-center">
+                                        <i class="fas fa-question-circle mr-1.5"></i> What is MEG?
+                                    </button>
+
+                                    <div id="meg-intro"
+                                        class="hidden mt-3 p-4 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-gray-700 shadow-inner">
+                                        <div class="space-y-3 leading-relaxed">
+                                            <p>
+                                                A <strong class="text-blue-900 font-semibold">Moisture-Enabled Electric
+                                                    Generator (MEG)</strong> is an
+                                                innovative low-grade energy-harvesting device that converts the
+                                                ubiquitous energy of atmospheric humidity directly into
+                                                sustainable electrical power. By operating independently of sunlight or
+                                                wind, MEGs offer a promising, continuous
+                                                power solution for decentralized micro-electronics, such as wearable
+                                                sensors and IoT devices.
+                                            </p>
+
+                                            <p>
+                                                The fundamental working principle of an MEG relies on moisture-induced
+                                                ion migration. The device utilizes
+                                                hydrophilic active materials that are rich in
+                                                ionizable functional groups (e.g., carboxyl or sulfonic acid groups) to
+                                                adsorb water molecules from the ambient environment.
+                                                This hydration triggers the dissociation of the surface functional
+                                                groups,
+                                                releasing free, mobile charge carriers, most commonly protons
+                                                (H<sup>+</sup>).
+                                            </p>
+
+                                            <p>
+                                                Electricity generation is driven by the establishment of a spatial
+                                                gradient. Whether created by an engineered
+                                                functional group gradient within the material or an asymmetric hydration
+                                                gradient caused by directional moisture
+                                                exposure, this imbalance forces the mobile ions to diffuse directionally
+                                                from high to low concentration areas.
+                                                Because the oppositely charged functional groups remain immobile on the
+                                                material's backbone, this directional
+                                                ionic flux effectively separates charges. This process builds up an
+                                                electrical potential difference (voltage)
+                                                between the electrodes, driving a continuous electric current through
+                                                the external circuit.
+                                            </p>
+                                        </div>
+                                        <div class="mt-4 pt-3 border-t border-blue-200/60">
+                                            <p class="font-bold text-gray-800 mb-1.5 text-xs uppercase tracking-wider">
+                                                Recommended Reviews:</p>
+                                            <ul class="list-disc list-inside space-y-1.5 text-blue-600 text-xs">
+                                                <li>
+                                                    <a href="https://doi.org/10.1002/adma.202301080" target="_blank"
+                                                        class="hover:underline">
+                                                        Hydrovoltaic Electricity Generator with Hygroscopic Materials
+                                                        (Adv. Mater.)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://doi.org/10.1002/adfm.202528270" target="_blank"
+                                                        class="hover:underline">
+                                                        Ion-Valence Engineering in Moisture-Enabled Electric Generator
+                                                        (Adv. Funct. Mater.)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://doi.org/10.1039/d4ee03356f" target="_blank"
+                                                        class="hover:underline">
+                                                        Emerging bioinspired hydrovoltaic electricity generators (Energy
+                                                        Environ. Sci.)
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 text-gray-700 text-sm leading-relaxed mb-6">
+                                    <p>
+                                        Conventional MEGs typically rely on ion diffusion to establish an electrical
+                                        double layer (EDL) at the electrode
+                                        interface to generate a potential difference. However, both the output voltage
+                                        magnitude and working duration remain
+                                        severely constrained. While introducing active metal electrodes to engage in
+                                        surface redox reactions can significantly
+                                        boost power output, such designs suffer from limited operational lifespan and
+                                        poor cyclability. To overcome these bottlenecks, this project investigates multivalent transition metal electrode materials 
+                                        (with a customized hydrogel system facilitating directional H<sup>+</sup> transport) that
+                                        facilitate the transfer of accumulated interfacial charges into external electrical output, enabling a rechargeable and
+                                        long-lasting MEG design. Within this project, my work focuses on exploring high-surface-area
+                                        Ni@Co electrodeposited electrodes
+                                        and evaluating their performance.
+                                    </p>
+                                </div>
+
+                                <div class="mt-8 space-y-8 border-t border-gray-200 pt-6">
+
+                                    <div
+                                        class="max-w-3xl mx-auto rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white">
+                                        <div class="overflow-hidden bg-gray-50 flex justify-center">
+                                            <img src="MEG_1.png" alt="MEG Fabrication Schematic"
+                                                class="w-full max-h-[400px] object-contain hover:scale-105 transition-transform duration-500">
+                                        </div>
+                                        <div
+                                            class="bg-gray-50 px-4 py-2.5 text-xs text-gray-600 border-t border-gray-200 leading-relaxed">
+                                            <strong class="text-gray-800">Figure 1:</strong> Schematic illustration of
+                                            the electrodeposition and MEG
+                                            device fabrication process.
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-4">
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div class="overflow-hidden h-36">
+                                                    <img src="MEG_2.jpg" alt="Ni Electrolyte"
+                                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    Ni Electrolyte
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div class="overflow-hidden h-36">
+                                                    <img src="MEG_3.jpg" alt="Co Electrolyte"
+                                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    Co Electrolyte
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div class="overflow-hidden h-36">
+                                                    <img src="MEG_4.jpg" alt="Ni Compound Coating"
+                                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    Ni Compound Electrode
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div class="overflow-hidden h-36">
+                                                    <img src="MEG_5.jpg" alt="Co Compound Coating"
+                                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    Co Compound Electrode
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div
+                                                    class="overflow-hidden h-36 bg-white p-2 flex items-center justify-center">
+                                                    <img src="MEG_7.png" alt="SEM Image"
+                                                        class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    SEM: Ni@Co Electrode
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div
+                                                    class="overflow-hidden h-36 bg-white p-2 flex items-center justify-center">
+                                                    <img src="MEG_8.png" alt="Ni EDS"
+                                                        class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    EDS: Ni Distribution
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div
+                                                    class="overflow-hidden h-36 bg-white p-2 flex items-center justify-center">
+                                                    <img src="MEG_9.png" alt="Co EDS"
+                                                        class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    EDS: Co Distribution
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="rounded-lg border border-gray-200 overflow-hidden shadow-sm bg-white flex flex-col">
+                                                <div
+                                                    class="overflow-hidden h-36 bg-gray-50 flex items-center justify-center">
+                                                    <img src="MEG_6.jpg" alt="Testing Setup"
+                                                        class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                                </div>
+                                                <div
+                                                    class="bg-gray-50 py-2 px-2 text-[11px] text-center text-gray-600 border-t border-gray-200 font-medium tracking-wide">
+                                                    MEG Testing Setup
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- experience 4 -->
+                            <div class="p-4 bg-gray-50 rounded-lg shadow-sm mt-6">
+                                <h3 class="text-lg font-bold text-gray-900">Design of a Thermal Metastructure for
+                                    Thermal Camouflage</h3>
+                                <p class="text-right text-sm text-gray-500">Oct. 2025 - Present</p>
+                                <p class="text-indigo-500 font-medium mb-2">with Prof. Liqun He (School of Engineering
+                                    Science, USTC, China)</p>
+                                <ul class="list-disc list-outside text-gray-700 space-y-1 ml-4 text-sm">
+                                    <li>Proposing a method for designing thermal metamaterials to reshape heat sources
+                                        during transient heat conduction.</li>
+                                    <li>Developing 2D and 3D models with script-assisted COMSOL Multiphysics.</li>
+                                    <li>Conducting FEA simulations.</li>
+                                </ul>
+                            </div>
+                            <button
+                                class="mt-3 text-indigo-600 hover:text-indigo-800 text-sm font-medium focus:outline-none transition duration-150 ease-in-out toggle-details-btn">
+                                <i class="fas fa-chevron-down mr-1"></i> Details
+                            </button>
+                            <div class="hidden mt-4 pt-4 border-t border-gray-200 collapsible-content">
+
+                                <div class="mb-5">
+                                    <button
+                                        onclick="document.getElementById('thermal-meta-intro-1').classList.toggle('hidden')"
+                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline focus:outline-none transition-colors flex items-center">
+                                        <i class="fas fa-question-circle mr-1.5"></i> About Thermal Metamaterials
+                                    </button>
+
+                                    <div id="thermal-meta-intro-1"
+                                        class="hidden mt-3 p-4 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-gray-700 shadow-inner">
+                                        <div class="space-y-3 leading-relaxed">
+                                            <p>
+                                                <strong class="text-blue-900 font-semibold">Thermal
+                                                    metamaterials</strong> (also referred to as thermal
+                                                metastructures) are artificial composite architectures designed to
+                                                control and manipulate heat
+                                                transfer—encompassing conduction, convection, and radiation—in manners
+                                                previously considered impossible
+                                                with natural media. While natural materials possess intrinsic and
+                                                largely invariable thermal properties,
+                                                thermal metamaterials derive their extraordinary behaviors primarily
+                                                from their engineered spatial
+                                                configurations, inhomogeneous geometric layouts, and structural
+                                                anisotropy.
+                                            </p>
+
+                                            <p>
+                                                Functionally, these artificial structures have revolutionized active
+                                                heat management and thermal signal
+                                                processing. Prominent device archetypes include thermal cloaks, which
+                                                bypass heat around an internal
+                                                protected zone without disturbing the external isotherms; thermal
+                                                concentrators, which focus heat flux
+                                                into designated regions for efficient thermal energy harvesting; and
+                                                thermal rotators or inverters,
+                                                which twist or redirect heat currents. Furthermore, active and
+                                                non-linear implementations enable
+                                                macroscopic thermal diodes, zero-differential devices, and advanced
+                                                thermal camouflage or illusion
+                                                platforms that disguise actual thermal signatures with engineered
+                                                exterior profiles.
+                                            </p>
+
+                                            <p>
+                                                The design methodologies for thermal metamaterials span both macroscopic
+                                                phenomenological theory and
+                                                microscopic carrier transport. At the macroscale, foundational methods
+                                                rely on <strong class="text-blue-900 font-semibold">transformation
+                                                    thermotics</strong>, exploiting the coordinate
+                                                form-invariance of conduction and diffusion equations to calculate
+                                                required conductivity tensors. To
+                                                address the resulting singularity and extreme anisotropy, the <strong
+                                                    class="text-blue-900 font-semibold">scattering cancellation
+                                                    technique</strong> offers simplified
+                                                multilayered and bilayer designs with natural isotropic materials, while
+                                                computational topology
+                                                optimization facilitates free-form structural synthesis. Concurrently,
+                                                at the micro- and nanoscale,
+                                                phononic engineering and thermal photonics allow direct tailoring of
+                                                phonon dispersion, localized
+                                                resonances, and radiative emissivity spectra.
+                                            </p>
+                                        </div>
+
+                                        <div class="mt-4 pt-3 border-t border-blue-200/60">
+                                            <p class="font-bold text-gray-800 mb-1.5 text-xs uppercase tracking-wider">
+                                                Recommended Reviews:</p>
+                                            <ul class="list-disc list-inside space-y-1.5 text-blue-600 text-xs">
+                                                <li>
+                                                    <a href="https://doi.org/10.1038/s41578-021-00283-2" target="_blank"
+                                                        class="hover:underline">
+                                                        Transforming heat transfer with thermal metamaterials and
+                                                        devices (Nat. Rev. Mater.)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://doi.org/10.1016/j.isci.2020.101637" target="_blank"
+                                                        class="hover:underline">
+                                                        Thermal Metamaterial: Fundamental, Application, and Outlook
+                                                        (iScience)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://doi.org/10.1088/2040-8978/18/4/044003"
+                                                        target="_blank" class="hover:underline">
+                                                        Transformation Laplacian metamaterials: recent advances in
+                                                        manipulating thermal and dc fields (J. Opt.)
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 text-gray-700 text-sm leading-relaxed mb-6">
+                                    <p>
+                                        Traditional thermal metamaterial designs are predominantly constrained to
+                                        steady-state fields, rendering
+                                        them inadequate for highly dynamic and transient practical scenarios. In
+                                        military applications, for
+                                        instance, conventional metamaterials and thermal radiation coatings can
+                                        successfully disguise the infrared
+                                        (IR) signature of a real heat source into arbitrary shapes—but only under
+                                        steady-state conditions. In
+                                        real-world operations, the transition from heat source activation to the
+                                        establishment of a steady thermal
+                                        state can take hours. During this prolonged transient period, the true IR
+                                        signature remains exposed or
+                                        severely distorted, significantly undermining the tactical value of thermal
+                                        camouflage. Similarly, in
+                                        civilian sectors, while recent studies have leveraged the IR characteristics of
+                                        structured materials to
+                                        create infrared displays, these displays remain inherently static, fundamentally
+                                        differing from digitally
+                                        controlled, dynamic electronic screens.
+                                    </p>
+                                    <p>
+                                        To address these limitations, the core objective of this project is to achieve
+                                        high-degree-of-freedom,
+                                        transient, and continuous mapping between a true heat source and a camouflaged
+                                        source within a
+                                        time-dependent thermal diffusion field. Specifically, the region between the
+                                        active heat source and the
+                                        outer isothermal boundary is systematically stratified, with distinct coordinate
+                                        transformations applied to
+                                        each layer. By employing spatial discretization alongside variable-thickness
+                                        modulation techniques, we
+                                        translated these theoretical mappings into 3D-machinable structural models,
+                                        which were subsequently
+                                        validated through rigorous thermal experiments.
+                                    </p>
+                                    <p>
+                                        The transient thermal camouflage regulation mechanism proposed in this work
+                                        holds significant promise for
+                                        applications in dynamic thermal management and thermal encryption. Notably, this
+                                        research has been
+                                        recognized and supported by a grant from the <strong class="text-gray-900">
+                                            NSFC Youth Student Basic Research Project</strong>.
+                                    </p>
+                                </div>
+
+                                <div class="mt-8 space-y-6 border-t border-gray-200 pt-6">
+
+                                    <div
+                                        class="w-full rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                        <div class="bg-white p-3 flex justify-center items-center overflow-hidden">
+                                            <img src="Transient_1.png" alt="Transient Thermal Camouflage Principle"
+                                                class="w-full max-h-[350px] object-contain hover:scale-[1.02] transition-transform duration-500">
+                                        </div>
+                                        <div
+                                            class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                            <strong class="text-gray-800">Figure 1:</strong> Schematic illustration of
+                                            the time-dependent transient
+                                            thermal camouflage principle.
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="w-full rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                        <div class="bg-white p-3 flex justify-center items-center overflow-hidden">
+                                            <img src="Transient_2.png" alt="2D Ideal Model Simulations"
+                                                class="max-w-full max-h-[550px] object-contain hover:scale-[1.02] transition-transform duration-500">
+                                        </div>
+                                        <div
+                                            class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                            <strong class="text-gray-800">Figure 2:</strong>
+                                            Some 2D COMSOL models with their anisotropic thermal characteristics
+                                            distribution.
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="w-full rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                        <div class="bg-white p-3 flex justify-center items-center overflow-hidden">
+                                            <img src="Transient_3.png" alt="3D Metamaterial Models"
+                                                class="w-full max-h-[220px] object-contain hover:scale-[1.02] transition-transform duration-500">
+                                        </div>
+                                        <div
+                                            class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                            <strong class="text-gray-800">Figure 3:</strong> Developed 3D fabricable
+                                            metamaterial models achieved
+                                            via spatial discretization and variable-thickness modulation.
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="w-full rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                        <div class="bg-white p-2 sm:p-3 flex justify-between items-center gap-1 sm:gap-3 overflow-hidden h-24 sm:h-40">
+                                            <div
+                                                class="flex-1 h-full overflow-hidden flex justify-center items-center bg-gray-50 rounded border border-gray-100 p-1">
+                                                <img src="expe_11_26_1.jpg" alt="Experimental setup 1"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                            <div
+                                                class="flex-1 h-full overflow-hidden flex justify-center items-center bg-gray-50 rounded border border-gray-100 p-1">
+                                                <img src="expe_11_26_2.jpg" alt="Experimental setup 2"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                            <div
+                                                class="flex-1 h-full overflow-hidden flex justify-center items-center bg-gray-50 rounded border border-gray-100 p-1">
+                                                <img src="expe_11_26_3.jpg" alt="Experimental setup 3"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                            <strong class="text-gray-800">Figure 4~6:</strong> Some preliminary trial
+                                            experiments.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- experience 3 -->
+                            <div class="p-4 bg-gray-50 rounded-lg shadow-sm mt-6">
+                                <h3 class="text-lg font-bold text-gray-900">Design of Electrothermal Metamaterials for
+                                    Decoupling Potential and Flux Control</h3>
+                                <p class="text-right text-sm text-gray-500">May. 2025 - Dec. 2025</p>
+                                <p class="text-indigo-500 font-medium mb-2">with Prof. Liqun He (School of Engineering
+                                    Science, USTC) and Prof. Gang Zhao (School of Information
+                                    Science and Technology, USTC)</p>
+                                <ul class="list-disc list-outside text-gray-700 space-y-1 ml-4 text-sm">
+                                    <li>Assisting in developing 2D and 3D metamaterials models.</li>
+                                    <li>Conducting FEA simulations with COMSOL.</li>
+                                    <li>Experimentally verifying the metamaterials’ performance under thermal and
+                                        electric fields.</li>
+                                </ul>
+                            </div>
+                            <button
+                                class="mt-3 text-indigo-600 hover:text-indigo-800 text-sm font-medium focus:outline-none transition duration-150 ease-in-out toggle-details-btn">
+                                <i class="fas fa-chevron-down mr-1"></i> Details
+                            </button>
+                            <div class="hidden mt-4 pt-4 border-t border-gray-200 collapsible-content">
+
+                                <!-- Fix: Removed the <p> wrapping the <div> -->
+                                <div class="mb-5">
+                                    <button
+                                        onclick="document.getElementById('thermal-meta-intro-2').classList.toggle('hidden')"
+                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium hover:underline focus:outline-none transition-colors flex items-center">
+                                        <i class="fas fa-question-circle mr-1.5"></i> About Thermal Metamaterials
+                                    </button>
+
+                                    <div id="thermal-meta-intro-2"
+                                        class="hidden mt-3 p-4 bg-blue-50/50 rounded-lg border border-blue-100 text-sm text-gray-700 shadow-inner">
+                                        <div class="space-y-3 leading-relaxed">
+                                            <p>
+                                                <strong class="text-blue-900 font-semibold">Thermal
+                                                    metamaterials</strong> (also referred to as thermal
+                                                metastructures) are artificial composite architectures designed to
+                                                control and manipulate heat
+                                                transfer—encompassing conduction, convection, and radiation—in manners
+                                                previously considered impossible
+                                                with natural media. While natural materials possess intrinsic and
+                                                largely invariable thermal properties,
+                                                thermal metamaterials derive their extraordinary behaviors primarily
+                                                from their engineered spatial
+                                                configurations, inhomogeneous geometric layouts, and structural
+                                                anisotropy.
+                                            </p>
+
+                                            <p>
+                                                Functionally, these artificial structures have revolutionized active
+                                                heat management and thermal signal
+                                                processing. Prominent device archetypes include thermal cloaks, which
+                                                bypass heat around an internal
+                                                protected zone without disturbing the external isotherms; thermal
+                                                concentrators, which focus heat flux
+                                                into designated regions for efficient thermal energy harvesting; and
+                                                thermal rotators or inverters,
+                                                which twist or redirect heat currents. Furthermore, active and
+                                                non-linear implementations enable
+                                                macroscopic thermal diodes, zero-differential devices, and advanced
+                                                thermal camouflage or illusion
+                                                platforms that disguise actual thermal signatures with engineered
+                                                exterior profiles.
+                                            </p>
+
+                                            <p>
+                                                The design methodologies for thermal metamaterials span both macroscopic
+                                                phenomenological theory and
+                                                microscopic carrier transport. At the macroscale, foundational methods
+                                                rely on <strong class="text-blue-900 font-semibold">transformation
+                                                    thermotics</strong>, exploiting the coordinate
+                                                form-invariance of conduction and diffusion equations to calculate
+                                                required conductivity tensors. To
+                                                address the resulting singularity and extreme anisotropy, the <strong
+                                                    class="text-blue-900 font-semibold">scattering cancellation
+                                                    technique</strong> offers simplified
+                                                multilayered and bilayer designs with natural isotropic materials, while
+                                                computational topology
+                                                optimization facilitates free-form structural synthesis. Concurrently,
+                                                at the micro- and nanoscale,
+                                                phononic engineering and thermal photonics allow direct tailoring of
+                                                phonon dispersion, localized
+                                                resonances, and radiative emissivity spectra.
+                                            </p>
+                                        </div>
+
+                                        <div class="mt-4 pt-3 border-t border-blue-200/60">
+                                            <p class="font-bold text-gray-800 mb-1.5 text-xs uppercase tracking-wider">
+                                                Recommended Reviews:</p>
+                                            <ul class="list-disc list-inside space-y-1.5 text-blue-600 text-xs">
+                                                <li>
+                                                    <a href="https://doi.org/10.1038/s41578-021-00283-2" target="_blank"
+                                                        class="hover:underline">
+                                                        Transforming heat transfer with thermal metamaterials and
+                                                        devices (Nat. Rev. Mater.)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://doi.org/10.1016/j.isci.2020.101637" target="_blank"
+                                                        class="hover:underline">
+                                                        Thermal Metamaterial: Fundamental, Application, and Outlook
+                                                        (iScience)
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://doi.org/10.1088/2040-8978/18/4/044003"
+                                                        target="_blank" class="hover:underline">
+                                                        Transformation Laplacian metamaterials: recent advances in
+                                                        manipulating thermal and dc fields (J. Opt.)
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4 text-gray-700 text-sm leading-relaxed mb-6">
+                                    <p>
+                                        Multifunctional metamaterials have emerged as powerful platforms for
+                                        manipulating physical fields through
+                                        deliberately engineered structures, with applications ranging from thermal
+                                        camouflage and energy transport
+                                        to integrated electronics. However, in conventional electro-thermal
+                                        metamaterials, regulating the voltage
+                                        field is generally accompanied by corresponding changes in the current
+                                        distribution, while manipulating
+                                        temperature inevitably affects heat flux. As a result, existing designs are
+                                        typically limited to one or two
+                                        functionalities, making it difficult to independently control voltage and
+                                        current, temperature and heat flux
+                                        within a single metamaterial. This limitation restricts the development of
+                                        multifunctional systems for
+                                        applications such as adaptive camouflage, thermal management, energy routing,
+                                        and reconfigurable electronic
+                                        devices.
+                                    </p>
+                                    <p>
+                                        To address this challenge, this project developed a programmable electrothermal
+                                        quad-functional metamaterial
+                                        (ETQFM) based on a field-line-guided coordinate transformation strategy. The key
+                                        idea is to sequentially
+                                        perform two coordinate transformations: the first transformation is applied
+                                        along current or heat-flux
+                                        streamlines to prescribe the transport pathways and realize flux concentration,
+                                        dispersion, or rotation; the
+                                        second transformation is performed along equipotential or isothermal lines to
+                                        independently modify the
+                                        corresponding potential or temperature distributions. The resulting
+                                        transformations generate spatially
+                                        varying anisotropic electrical and thermal conductivity tensors, allowing
+                                        potential and flux to be
+                                        manipulated independently within the same structure.
+                                    </p>
+                                    <p>
+                                        To translate the theoretically required anisotropic tensors into manufacturable
+                                        structures, the design
+                                        domain is discretized into finite subunits. Within each subunit, the target
+                                        anisotropy is approximated using
+                                        rotated layers with different effective conductivities. Importantly, we employ a
+                                        monolithic,
+                                        interfacial-thermal-resistance-free thickness-engineering strategy, in which the
+                                        anisotropic responses are
+                                        realized within a single aluminum-alloy structure rather than through
+                                        conventional dissimilar-material
+                                        interfaces. The resulting architectures are fabricated by high-precision
+                                        laser-sintering-based 3D printing
+                                        and experimentally validated through both infrared thermal imaging and
+                                        high-resolution electrical
+                                        measurements.
+                                    </p>
+
+                                    <div class="pt-3 mt-2 border-t border-gray-100">
+                                        <p
+                                            class="text-[13px] text-gray-600 bg-indigo-50/50 inline-block px-3 py-1.5 rounded-md border border-indigo-100/50">
+                                            <i class="fas fa-external-link-alt text-indigo-500 mr-1.5"></i>
+                                            More details of this work can be viewed
+                                            <a href="https://doi.org/10.1002/adma.202522718" target="_blank"
+                                                class="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-colors">
+                                                here
+                                            </a>.
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- experience 2 -->
+                            <div class="p-4 bg-gray-50 rounded-lg shadow-sm mt-6">
+                                <h3 class="text-lg font-bold text-gray-900">Research Training in Framework Nucleic Acids
+                                    (FNAs)</h3>
+                                <p class="text-right text-sm text-gray-500">Feb. 2025 - May. 2025</p>
+                                <p class="text-indigo-500 font-medium mb-2">with Prof. Tao Li (School of Chemistry and
+                                    Materials Science, USTC)</p>
+                                <ul class="list-disc list-outside text-gray-700 space-y-1 ml-4 text-sm">
+                                    <li>Studying the fundamental concepts and recent advances in FNAs-based
+                                        macromolecular nanostructure design
+                                        through literature reviews.</li>
+                                </ul>
+                            </div>
+                            <button
+                                class="mt-3 text-indigo-600 hover:text-indigo-800 text-sm font-medium focus:outline-none transition duration-150 ease-in-out toggle-details-btn">
+                                <i class="fas fa-chevron-down mr-1"></i> Details
+                            </button>
+                            <div class="hidden mt-4 pt-4 border-t border-gray-200 collapsible-content">
+                                <div class="space-y-4 text-gray-700 text-sm leading-relaxed mb-6">
+                                    <p>
+                                        During my one-semester research training in Prof. Tao Li's group, I engaged in
+                                        extensive literature
+                                        reviews and group discussions, which sparked a profound interest in Framework
+                                        Nucleic Acids (FNAs). This field focuses
+                                        on the design of nucleic acid sequences, leveraging programmable hydrogen
+                                        bonding to self-assemble functional micro-
+                                        and nanostructures.
+                                    </p>
+                                    <p>
+                                        By integrating dynamic structural transformations—such as toehold-mediated
+                                        strand displacement, i-motifs, and
+                                        G-quadruplexes—these micro-architectures can respond to specific environmental
+                                        stimuli, including
+                                        target RNAs, Mg<sup>2+</sup> ions, pH variations, and ATP. This responsiveness
+                                        enables the construction of
+                                        complex molecular logic gates, showing promise in biomedical applications like
+                                        targeted drug delivery
+                                        and the highly sensitive detection of low-abundance biomarkers. Moreover,
+                                        introducing specific chemical
+                                        modifications to the nucleic acid strands can endow these programmable
+                                        assemblies with unique catalytic
+                                        capabilities.
+                                    </p>
+                                    <p>
+                                        From my perspective, highly customizable polymers like nucleic acids possess
+                                        tremendous, untapped potential for
+                                        bridging micro-scale molecular manipulation with macro-scale material
+                                        properties. I believe that the
+                                        insights I gained from this training will profoundly inspire and
+                                        broaden my future interdisciplinary research horizons.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- experience 1 -->
+                            <div class="p-4 bg-gray-50 rounded-lg shadow-sm mt-6">
+                                <h3 class="text-lg font-bold text-gray-900">Study of Metal Oxides in Activating
+                                    Persulfates</h3>
+                                <p class="text-right text-sm text-gray-500">Jul. 2024 - Feb. 2025</p>
+                                <p class="text-indigo-500 font-medium mb-2">with Dr. Wan Li (School of Chemistry and
+                                    Materials Science, USTC)</p>
+                                <ul class="list-disc list-outside text-gray-700 space-y-1 ml-4 text-sm">
+                                    <li>Comparing the activation efficiencies of various metal oxides with characterized
+                                        morphologies in
+                                        peroxymonosulfate (PMS)-based and peroxydisulfate (PDS)-based advanced oxidation
+                                        processes (AOPs).</li>
+                                    <li>Characterizing metal oxides via SEM and XRD, and interpreting the derived data.
+                                    </li>
+                                    <li>Monitoring the reaction processes via UV–Vis spectrophotometry.</li>
+                                </ul>
+                            </div>
+                            <button
+                                class="mt-3 text-indigo-600 hover:text-indigo-800 text-sm font-medium focus:outline-none transition duration-150 ease-in-out toggle-details-btn">
+                                <i class="fas fa-chevron-down mr-1"></i> Details
+                            </button>
+                            <div class="hidden mt-4 pt-4 border-t border-gray-200 collapsible-content">
+                                <p class="text-gray-700 text-sm mt-4 mb-4 leading-relaxed">
+                                    This project was part of the "Undergraduate Research Program" at USTC. Titled
+                                    “Catalytic Efficiency of Metal Oxides in
+                                    Activating Persulfates,” it investigated the catalytic efficiencies of various metal
+                                    oxides with characterized
+                                    morphologies in peroxymonosulfate (PMS)-based and peroxydisulfate (PDS)-based
+                                    advanced oxidation processes (AOPs), under
+                                    the guidance of Dr. Wan Li.
+                                </p>
+
+                                <div class="mt-8 space-y-5 border-t border-gray-200 pt-6">
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                                        <div
+                                            class="rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                            <div
+                                                class="bg-white p-3 flex justify-center items-center overflow-hidden h-40">
+                                                <img src="degrading_RhB.jpg" alt="Degradation of RhB"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                            <div
+                                                class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                                <strong class="text-gray-800">Figure 1:</strong> Illustration of AOPs.
+                                                The fading color of the RhB
+                                                substrate indicates its degradation.
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                            <div
+                                                class="bg-white p-3 flex justify-center items-center overflow-hidden h-40">
+                                                <img src="preparation_of_cuprous_oxide.jpg" alt="Preparation of Cu2O"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                            <div
+                                                class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                                <strong class="text-gray-800">Figure 2:</strong> Preparation of
+                                                Cu<sub>2</sub>O nanoparticles.
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div
+                                        class="w-full rounded-lg overflow-hidden border border-gray-200 shadow-sm bg-white flex flex-col">
+                                        
+                                        <div class="bg-white p-2 sm:p-3 flex justify-between items-center gap-1 sm:gap-3 overflow-hidden h-24 sm:h-36">
+                                            <div
+                                                class="flex-1 h-full overflow-hidden flex justify-center items-center bg-gray-50 rounded border border-gray-100 p-1">
+                                                <img src="SEM_record.png" alt="SEM image 1"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                            <div
+                                                class="flex-1 h-full overflow-hidden flex justify-center items-center bg-gray-50 rounded border border-gray-100 p-1">
+                                                <img src="SEM_record_2.png" alt="SEM image 2"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                            <div
+                                                class="flex-1 h-full overflow-hidden flex justify-center items-center bg-gray-50 rounded border border-gray-100 p-1">
+                                                <img src="XRD_record_Jade.png" alt="XRD spectral graph"
+                                                    class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-300">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="bg-gray-50 px-4 py-2.5 text-[11px] text-gray-600 border-t border-gray-200 leading-relaxed">
+                                            <strong class="text-gray-800">Figure 3:</strong> Characterization of
+                                            synthesized Cu<sub>2</sub>O nanocubes
+                                            (SEM morphologies & XRD spectral patterns).
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="section4">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-2">Life Outside the Lab</h2>
+
+                        <div class="p-6 bg-blue-50/50 rounded-lg border-l-4 border-blue-400 shadow-sm">
+                            <h3 class="font-bold text-blue-900 mb-3">Personal Interests & Hobbies</h3>
+
+                            <button id="beyond-toggle-btn"
+                                class="flex items-center text-indigo-600 hover:text-indigo-800 text-sm font-semibold transition-colors focus:outline-none">
+                                <i class="fas fa-chevron-down mr-2" id="beyond-icon"></i>
+                                <span id="beyond-text">Show more</span>
+                            </button>
+
+                            <div id="beyond-content" class="hidden mt-8 space-y-10 animate-fade-in">
+                                <!-- 2026 Singapore -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="mandai_1.jpg" alt="photo 1" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(2deg) translateX(10px);">
+                                            <img src="mandai_2.jpg" alt="photo 2" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-10"
+                                            style="transform: rotate(5deg) translateX(20px);">
+                                            <img src="mandai_3.jpg" alt="photo 3" class="w-full h-full object-cover">
+                                        </div>
+
+                                    </div>
+                                    <div class="h-3"></div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2026_08/ Visiting Night Safari at Mandai Zoo, Singapore
+                                    </p>
+                                </div>
+
+                                <!-- 2026 长沙 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="CSU_1.jpg" alt="photo 1" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(2deg) translateX(10px);">
+                                            <img src="CSU_2.jpg" alt="photo 2" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-10"
+                                            style="transform: rotate(5deg) translateX(20px);">
+                                            <img src="CSU_3.jpg" alt="photo 3" class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(8deg) translateX(30px);">
+                                            <img src="CSU_4.jpg" alt="photo 4" class="w-full h-full object-cover">
+                                        </div>
+
+                                    </div>
+                                    <div class="h-3"></div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2026_04/ Visiting Changsha City and the State Key Laboratory of Intensified
+                                        Metallurgy of Nonferrous Metals at Central South U
+                                    </p>
+                                </div>
+
+                                <!-- 2025比亚迪马拉松 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="marathon_2025_12_p1.jpg" alt="BYD marathon photo 1"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(2deg) translateX(10px);">
+                                            <img src="marathon_2025_12_p2.jpg" alt="BYD marathon photo 2"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-10"
+                                            style="transform: rotate(5deg) translateX(20px);">
+                                            <img src="marathon_2025_12_p3.jpg" alt="BYD marathon photo 3"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2025_12/ BYD-sponsored campus mini-marathon
+                                    </p>
+                                </div>
+
+                                <!-- 2025英才班马拉松 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="marathon_2025_11_p1.png" alt="Elite program marathon photo 1"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(2deg) translateX(10px);">
+                                            <img src="marathon_2025_11_p2.jpg" alt="Elite program marathon photo 2"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-10"
+                                            style="transform: rotate(5deg) translateX(20px);">
+                                            <img src="marathon_2025_11_p3.jpg" alt="Elite program marathon photo 3"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2025_11/ Mini-marathon for students of Elite Programs
+                                    </p>
+                                </div>
+
+                                <!-- 2025手工课/工程科学实践 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="crafts_2025_p1.jpg" alt="Engineering craft photo 1"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(2deg) translateX(10px);">
+                                            <img src="crafts_2025_p2.jpg" alt="Engineering craft photo 2"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-10"
+                                            style="transform: rotate(5deg) translateX(20px);">
+                                            <img src="crafts_2025_p3.jpg" alt="Engineering craft photo 3"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(8deg) translateX(30px);">
+                                            <img src="crafts_2025_p4.jpg" alt="Engineering craft photo 4"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div class="h-3"></div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2025_07/ Engineering Science Practice Courseworks (Including laser cutting, EDM
+                                        wire cutting, 3D laser subsurface engraving, CNC machining and so on)
+                                    </p>
+                                </div>
+
+                                <!-- 2025 滑雪 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="skiing_p1.jpg" alt="Skiing at Mazongshan"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2025_02/ Skiing
+                                    </p>
+                                </div>
+
+                                <!-- 2024 口琴 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="harmonica_2024_p1.jpg" alt="Harmonica club performance 1"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(2deg) translateX(10px);">
+                                            <img src="harmonica_2024_p2.jpg" alt="Harmonica club performance 2"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2024_12/ Harmonica Club
+                                    </p>
+                                </div>
+
+                                <!-- 2024去上海玩 -->
+                                <div class="gallery-wrapper mb-12">
+                                    <div
+                                        class="photo-stack-container relative flex items-center justify-start h-64 cursor-pointer transition-all duration-500 ease-in-out">
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-40"
+                                            style="transform: rotate(-3deg);">
+                                            <img src="shanghai_2024_p1.jpg" alt="Shanghai trip photo 1"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-30"
+                                            style="transform: rotate(-2deg) translateX(5px);">
+                                            <img src="shanghai_2024_p2.jpg" alt="Shanghai trip photo 2"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-20"
+                                            style="transform: rotate(-1deg) translateX(10px);">
+                                            <img src="shanghai_2024_p3.jpg" alt="Shanghai trip photo 3"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-10"
+                                            style="transform: rotate(0deg) translateX(15px);">
+                                            <img src="shanghai_2024_p4.jpg" alt="Shanghai trip photo 4"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(1deg) translateX(20px);">
+                                            <img src="shanghai_2024_p5.jpg" alt="Shanghai trip photo 5"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(8deg) translateX(20px);">
+                                            <img src="shanghai_2024_p6.jpg" alt="Shanghai trip photo 6"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(7deg) translateX(20px);">
+                                            <img src="shanghai_2024_p7.jpg" alt="Shanghai trip photo 7"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(6deg) translateX(20px);">
+                                            <img src="shanghai_2024_p8.jpg" alt="Shanghai trip photo 8"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(5deg) translateX(20px);">
+                                            <img src="shanghai_2024_p9.jpg" alt="Shanghai trip photo 9"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(4deg) translateX(20px);">
+                                            <img src="shanghai_2024_p10.jpg" alt="Shanghai trip photo 10"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(3deg) translateX(20px);">
+                                            <img src="shanghai_2024_p11.jpg" alt="Shanghai trip photo 11"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <div class="stack-card absolute w-48 h-60 rounded-xl shadow-xl overflow-hidden border-4 border-white transition-all duration-500 ease-in-out z-0"
+                                            style="transform: rotate(2deg) translateX(20px);">
+                                            <img src="shanghai_2024_p12.jpg" alt="Shanghai trip photo 12"
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                    </div>
+                                    <div class="h-4"></div>
+                                    <p
+                                        class="gallery-caption mb-4 text-xs text-gray-600 font-medium italic border-l-2 border-indigo-300 pl-2">
+                                        2024_04/ Visiting Tongji U & Fudan U (Shanghai)
+                                    </p>
+                                </div>
+
+                                <!-- Free Time & Explorations -->
+                                <div
+                                    class="mt-2 bg-white/70 p-5 rounded-lg border border-blue-100 shadow-sm relative overflow-hidden">
+                                    <!-- 装饰性背景图标 -->
+                                    <i
+                                        class="fas fa-mug-hot absolute -bottom-4 -right-4 text-6xl text-blue-50 opacity-50 z-0"></i>
+
+                                    <h4
+                                        class="font-bold text-gray-800 mb-4 flex items-center border-b border-gray-200/80 pb-2 relative z-10">
+                                        <i class="fas fa-coffee text-amber-600 mr-2"></i> Free Time & Explorations
+                                    </h4>
+
+                                    <p class="text-sm text-gray-600 leading-relaxed">
+                                        <span class="font-medium text-gray-700">
+                                            In my spare time, I enjoy swimming, jogging, or playing video games, two
+                                            recent favorites being <em>Genshin</em> and <em>Baldur's Gate
+                                                3</em>. During longer breaks, I like to pick up new skills; currently on
+                                            my list are conducting MD simulations with LAMMPS, exploring topology
+                                            optimization cases, and developing a small game.
+                                        </span>
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <footer class="mt-20 pt-10 text-center text-sm text-gray-500 border-t border-gray-200">
+                <p>&copy; 2026 Hongda SU. All rights reserved.</p>
+            </footer>
+
+        </main>
+
+    </div>
+
+</body>
+
+</html>
